@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radio Maitino | Emisión Autónoma Maestro</title>
+    <title>Radio Maitino | Emisión Profesional Unificada</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,30 +29,26 @@
         
         /* Paleta de colores para jerarquías */
         .status-badge.estudiolive { background: var(--broadcast-red); color: white; box-shadow: 0 4px 10px rgba(208,2,27,0.3); }
-        .status-badge.emergency { background: #742a2a; color: white; }
-        .status-badge.breaking, .status-badge.breaking_live, .status-badge.breaking_news, .status-badge.thirty_breaking_news { background: #ff003c; color: white; font-weight: 800; }
+        .status-badge.breaking, .status-badge.breakinglive, .status-badge.breaking_news, .status-badge.thirty_breaking_news { background: #ff003c; color: white; font-weight: 800; }
         .status-badge.special { background: #6b46c1; color: white; }
-        .status-badge.sports { background: #2f855a; color: #f0fff4; border: 1px solid #48bb78; }
-        .status-badge.chimes { background: #2d3748; color: #fff; }
-        .status-badge.hour { background: #edf2f7; color: #2d3748; border: 1px solid #cbd5e0; }
         .status-badge.news { background: #ffe5e5; color: var(--broadcast-red); }
         .status-badge.weather { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
         .status-badge.traffic { background: #feebc8; color: #dd6b20; border: 1px solid #fbd38d; }
-        .status-badge.schedule { background: #e2e8f0; color: #2b6cb0; }
-        .status-badge.live { background: #dd6b20; color: white; }
-        .status-badge.live_free, .status-badge.live3 { background: #3182ce; color: white; }
-        .status-badge.podcast { background: #4a5568; color: #edf2f7; }
-        .status-badge.interview { background: #feebc8; color: #c05621; }
-        .status-badge.space { background: #edf2f7; color: #4a5568; }
-        .status-badge.promo { background: #ebf8ff; color: #2b6cb0; }
-        .status-badge.jingle { background: #e5ffe5; color: #009900; }
+        .status-badge.live { background: #e5f0ff; color: #0066cc; }
         .status-badge.ad { background: #fff4e5; color: #cc7a00; }
-        .status-badge.filler { background: #f5f5f7; color: var(--text-secondary); }
+        .status-badge.jingle { background: #e5ffe5; color: #009900; }
+        .status-badge.space { background: #e2e8f0; color: #4a5568; }
+        .status-badge.promo { background: #feebc8; color: #dd6b20; }
+        .status-badge.podcast { background: #e9d8fd; color: #6b46c1; }
+        .status-badge.interview { background: #e6fffa; color: #00b5d8; }
+        .status-badge.emergency { background: #fefcbf; color: #d69e2e; }
         .status-badge.off { background: #1a202c; color: #f7fafc; }
-        .status-badge.error_fallback { background: #c53030; color: white; font-weight: 800; animation: pulse 2s infinite; }
+        .status-badge.filler { background: #f5f5f7; color: var(--text-secondary); }
+        .status-badge.silence { background: #f5f5f7; color: var(--text-secondary); opacity: 0.5; }
         
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-
+        .status-badge.sports { background: #2f855a; color: #f0fff4; border: 1px solid #48bb78; }
+        .score-box { display: inline-block; background: #1a202c; color: #68d391; padding: 4px 16px; border-radius: 8px; font-family: 'Inter', sans-serif; font-weight: 800; margin-top: 10px; margin-left: 0; border: 1px solid #2f855a; white-space: nowrap; box-shadow: 0 0 12px rgba(72,187,120,0.15); font-size: 1rem; letter-spacing: 1px; }
+        
         .album-art { position: relative; width: 140px; height: 140px; background: #f5f5f7; border-radius: 20px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03); overflow: hidden; }
         .album-art img { position: absolute; width: 100%; height: 100%; border-radius: 20px; object-fit: cover; z-index: 1; }
         #visualizer-canvas { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; z-index: 2; opacity: 0.85; pointer-events: none; }
@@ -110,23 +106,16 @@
         </div>
     </div>
 
-    <audio id="deck-a" preload="auto" playsinline crossorigin="anonymous"></audio>
-    <audio id="deck-b" preload="auto" playsinline crossorigin="anonymous"></audio>
+    <audio id="deck-a" preload="metadata" playsinline></audio>
+    <audio id="deck-b" preload="metadata" playsinline></audio>
 
     <script>
         const CONFIG = {
             api: "https://script.google.com/macros/s/AKfycbzoQfFFkwSOoZlnX73FKn8lEtbcRSEe6CYXPeuZ6tZPG5OsBuXivvvGtBJhGJhPC7GU/exec",
-            crossfadeDur: 2, 
-            pollInterval: 90,
+            crossfadeDur: 3, pollInterval: 90,
             defaultLogo: "https://ia600602.us.archive.org/32/items/r-maitino-psd-1400.1400/r%20maitino%20psd%201400.1400.png"
         };
         const SILENCE_MP3 = "data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABpRDIzIHYyLjMuMCBhbmQgaWQzIHYyLjQuMCB0YWdzAAAAAAAAAAAA//MkxAAKAAAABpAAAAWSAAAAASU1BTUUzLjk5LjVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV";
-        
-        // --- CONFIGURACIÓN DE EMERGENCIA ---
-        const AUDIO_AVISO_CAIDA = "https://tu-url-de-audio.com/aviso_caida.mp3"; 
-        let errorCount = 0;
-        const MAX_ERRORS = 4;
-        let isInEmergencyMode = false;
 
         let systemOn = false, userVolume = 0.9, faderLevel = 1.0, currentSourceUrl = "", currentMode = 'FILLER';
         let currentCrossfade = CONFIG.crossfadeDur;
@@ -135,16 +124,10 @@
         let activeDeck = deckA, fadingDeck = null, fadeOutEndTime = 0, isTransitioning = false; 
         let isDataLoaded = false;
         let visStartTime = Date.now(); 
-        let lastDriftCorrection = 0; 
-        let lastIdlePreloadedUrl = "";
-
-        let library = { news: null, chimes: null, weather: null, traffic: null, hours: {}, breaking: null, ads: [], jingles: [], spaces: [], promos: [], filler: [], schedule: {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}, scheduleDates: {} };
-        let activeLiveState = { src: "", startTime: 0 }; // Tracker optimizado solo para conexiones en directo
-        let lastPipFired = -1;
-        let lastClockSec = -1, lastScheduleSec = -1; 
         
-        const activePreloads = new Map();
-        const DURATION_CACHE = new Map(); 
+        let library = { news: null, thirty_news: null, breaking_news: null, chimes: null, weather: null, traffic: null, hours: {}, breaking: null, ads: [], jingles: [], spaces: [], promos: [], filler: [], schedule: {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}, scheduleDates: {} };
+        let audioCtx, lastPipFired = -1;
+        let lastClockSec = -1, lastScheduleSec = -1; 
 
         const el = {
             clock: document.getElementById('clock'), title: document.getElementById('main-title'), sub: document.getElementById('sub-title'), 
@@ -152,111 +135,8 @@
             btn: document.getElementById('pwr-btn'), sch: document.getElementById('schedule-list'), canvas: document.getElementById('visualizer-canvas')
         };
 
-        // --- GENERADOR SINTÉTICO DE "PIPS" EN FORMATO WAV ---
-        let pipShortUrl = "", pipLongUrl = "";
-        function generateBeepBlob(durationMs, frequency) {
-            const sampleRate = 8000;
-            const numSamples = Math.floor(sampleRate * (durationMs / 1000));
-            const buffer = new Uint8Array(44 + numSamples);
-            
-            const writeString = (offset, str) => { for (let i = 0; i < str.length; i++) buffer[offset + i] = str.charCodeAt(i); };
-            const writeUint32 = (offset, val) => { buffer[offset] = val & 0xff; buffer[offset+1] = (val >> 8) & 0xff; buffer[offset+2] = (val >> 16) & 0xff; buffer[offset+3] = (val >> 24) & 0xff; };
-            const writeUint16 = (offset, val) => { buffer[offset] = val & 0xff; buffer[offset+1] = (val >> 8) & 0xff; };
-
-            writeString(0, 'RIFF'); writeUint32(4, 36 + numSamples); writeString(8, 'WAVE'); writeString(12, 'fmt ');
-            writeUint32(16, 16); writeUint16(20, 1); writeUint16(22, 1); writeUint32(24, sampleRate);
-            writeUint32(28, sampleRate); writeUint16(32, 1); writeUint16(34, 8); writeString(36, 'data');
-            writeUint32(40, numSamples);
-
-            for (let i = 0; i < numSamples; i++) {
-                const t = i / sampleRate;
-                const val = Math.round(128 + 120 * Math.sin(2 * Math.PI * frequency * t));
-                buffer[44 + i] = val;
-            }
-            return new Blob([buffer], { type: 'audio/wav' });
-        }
-
-        function initPips() {
-            if (!pipShortUrl) {
-                pipShortUrl = URL.createObjectURL(generateBeepBlob(100, 1000));
-                pipLongUrl = URL.createObjectURL(generateBeepBlob(500, 1000));
-            }
-        }
-
-        function playPip(dur) {
-            initPips();
-            let p = new Audio(dur === 0.1 ? pipShortUrl : pipLongUrl);
-            p.volume = userVolume * 0.5;
-            p.play().catch(() => {});
-        }
-
-        // --- CÁLCULO DINÁMICO DE DURACIÓN (EL TIEMPO Y TRÁFICO) ---
-        function actualizarDuracionDinamica(item) {
-            if (!item || !item.src) return Promise.resolve(item);
-            
-            const esDinamico = item.src.includes('meteoelx.com') || item.src.includes('dgt.es') || item.type === 'weather' || item.type === 'traffic';
-            if (!esDinamico) return Promise.resolve(item);
-
-            const cacheKey = item.src;
-            const cached = DURATION_CACHE.get(cacheKey);
-            
-            if (cached && (Date.now() - cached.time < 300000)) {
-                item.dur = cached.dur;
-                return Promise.resolve(item);
-            }
-
-            return new Promise((resolve) => {
-                let temp = new Audio();
-                temp.preload = "metadata";
-                temp.src = item.src;
-                
-                let resolved = false;
-                const finalizar = (dur) => {
-                    if (resolved) return;
-                    resolved = true;
-                    temp.onloadedmetadata = null;
-                    temp.onerror = null;
-                    if (dur && isFinite(dur) && dur > 0) {
-                        item.dur = Math.ceil(dur);
-                        DURATION_CACHE.set(cacheKey, { dur: item.dur, time: Date.now() });
-                    } else {
-                        item.dur = (item.type === 'weather') ? 60 : 90; 
-                    }
-                    resolve(item);
-                };
-
-                temp.onloadedmetadata = () => finalizar(temp.duration);
-                temp.onerror = () => finalizar(item.type === 'weather' ? 60 : 90);
-                setTimeout(() => finalizar(item.type === 'weather' ? 60 : 90), 5000);
-            });
-        }
-
-        async function resolverDuracionesDinámicas() {
-            let promises = [];
-            if (library.weather) promises.push(actualizarDuracionDinamica(library.weather));
-            if (library.traffic) promises.push(actualizarDuracionDinamica(library.traffic));
-            
-            Object.values(library.hours).forEach(item => {
-                if (item && (item.src.includes('meteoelx.com') || item.src.includes('dgt.es'))) {
-                    promises.push(actualizarDuracionDinamica(item));
-                }
-            });
-
-            Object.keys(library.schedule).forEach(day => {
-                library.schedule[day].forEach(item => {
-                    if (item && (item.src.includes('meteoelx.com') || item.src.includes('dgt.es'))) {
-                        promises.push(actualizarDuracionDinamica(item));
-                    }
-                });
-            });
-
-            await Promise.allSettled(promises);
-            updateScheduleUI();
-        }
-
-        // --- CONTROL DE VOLUMEN DIRECTO ---
-        function updateVolume(val) { 
-            userVolume = val; 
+        function updateVolume(val) {
+            userVolume = val;
             if (activeDeck) activeDeck.volume = userVolume * faderLevel;
         }
 
@@ -264,19 +144,20 @@
             if (!audioElem || !audioElem.src || audioElem.src === window.location.href) return;
             let playPromise = audioElem.play();
             if (playPromise !== undefined) {
-                playPromise.catch(err => { console.warn("Retraso en carga o bloqueo:", err); });
+                playPromise.catch(err => {
+                    console.warn("Autoplay bloqueado. Reintentando...", err);
+                    setTimeout(() => { if (systemOn && audioElem.paused) audioElem.play().catch(e=>{}); }, 1000);
+                });
             }
         }
 
         function updateBtnState() {
             if (!systemOn) el.btn.innerHTML = '<i class="fas fa-power-off"></i>';
-            else if (activeDeck.src && (activeDeck.readyState < 3 && !activeDeck.paused)) el.btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            else if (activeDeck.src && (activeDeck.readyState < 3 && !activeDeck.paused) && !['ESTUDIOLIVE', 'LIVE', 'BREAKINGLIVE'].includes(currentMode)) el.btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             else el.btn.innerHTML = '<i class="fas fa-stop"></i>';
         }
 
-        [deckA, deckB].forEach(d => { 
-            ['waiting','playing','canplay','stalled'].forEach(e => d.addEventListener(e, updateBtnState)); 
-        });
+        [deckA, deckB].forEach(d => { ['waiting','playing','canplay','stalled'].forEach(e => d.addEventListener(e, updateBtnState)); });
 
         function getSpainTime() {
             let now = new Date();
@@ -285,72 +166,7 @@
             return new Date(v.year, v.month - 1, v.day, (v.hour === "24" ? 0 : v.hour), v.minute, v.second, now.getMilliseconds());
         }
 
-        async function initSystem() {
-            await fetchData(); 
-            setInterval(fetchData, CONFIG.pollInterval * 1000); 
-
-            // --- REPRODUCCIÓN AUTOMÁTICA DIRECTA PRIORIZADA ---
-            const intentarAutoPlay = () => {
-                if (!systemOn) {
-                    toggleBroadcast();
-                }
-            };
-            
-            intentarAutoPlay();
-
-            // Respaldo de interacción directa: si el navegador detiene el autoplay,
-            // se iniciará de forma fluida e inmediata en cuanto el usuario clique o toque cualquier parte.
-            document.addEventListener('click', intentarAutoPlay, { once: true });
-            document.addEventListener('touchstart', intentarAutoPlay, { once: true });
-        }
-
-        async function fetchData() {
-            try { 
-                let res = await fetch(CONFIG.api, { redirect: 'follow' }); 
-                let data = await res.json(); 
-                
-                processData(data); 
-                
-                // 1. Marcamos la emisión como lista y cargada INMEDIATAMENTE
-                isDataLoaded = true; 
-                errorCount = 0; 
-                isInEmergencyMode = false;
-                updateScheduleUI(); 
-                
-                // 2. Resolvemos los cálculos pesados asíncronamente en segundo plano
-                resolverDuracionesDinámicas().then(() => {
-                    updateScheduleUI(); 
-                }).catch(err => console.warn("Error calculando duraciones", err));
-                
-            } 
-            catch (e) { manejarError(); }
-        }
-
-        function manejarError() {
-            errorCount++;
-            if (errorCount >= MAX_ERRORS) isInEmergencyMode = true;
-        }
-
-        function addToSchedule(item) {
-            let s1 = String(item.dayRaw || "").trim();
-            let s2 = String(item.hourRaw || "").trim(); 
-            let startSecs = -1;
-            let m = s2.match(/^(\d{1,2}):(\d{2})/);
-            if (m) startSecs = parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60;
-            if (startSecs === -1) return;
-            item.startSecs = startSecs;
-
-            let days = []; 
-            if (s1 && s1.toLowerCase() !== "null") {
-                s1.split(',').forEach(p => { 
-                    if (p.includes('-')) { let l = p.split('-'); for (let i = parseInt(l[0]); i <= parseInt(l[1]); i++) days.push(i); } 
-                    else { days.push(parseInt(p)); } 
-                });
-            }
-            if (days.length === 0) days = [0, 1, 2, 3, 4, 5, 6]; 
-            [...new Set(days)].forEach(d => { if(library.schedule[d]) library.schedule[d].push(item); });
-        }
-
+        // Rotación por día del año para programas fuera del Filler
         function parseAndRotateLink(url) { 
             if (!url) return ""; 
             let trimmed = url.trim();
@@ -366,79 +182,119 @@
             return trimmed; 
         }
 
+        async function initSystem() {
+            await fetchData(); 
+            setInterval(fetchData, CONFIG.pollInterval * 1000); 
+        }
+
+        async function fetchData() {
+            try { 
+                let res = await fetch(CONFIG.api, { redirect: 'follow' }); 
+                let data = await res.json(); 
+                processData(data); 
+                isDataLoaded = true; 
+                updateScheduleUI(); 
+                updateDynamicDurations(); 
+            } catch (e) { console.log("API Sync Error"); }
+        }
+
+        function updateDynamicDurations() {
+            [library.weather, library.traffic].forEach(item => {
+                if (item && item.src) {
+                    let temp = new Audio();
+                    temp.preload = "metadata";
+                    temp.src = item.src;
+                    temp.onloadedmetadata = () => { if (temp.duration && isFinite(temp.duration)) item.dur = Math.ceil(temp.duration); };
+                }
+            });
+        }
+
+        function addToSchedule(item) {
+            let s1 = String(item.dayRaw || "").trim(), s2 = String(item.hourRaw || "").trim(), startSecs = -1;
+            let m = s2.match(/^(\d{1,2}):(\d{2})/);
+            if (m) startSecs = parseInt(m[1], 10) * 3600 + parseInt(m[2], 10) * 60;
+            if (startSecs === -1) return;
+            item.startSecs = startSecs;
+
+            if (s1.includes('/')) {
+                let parts = s1.split('/');
+                if (parts.length === 3) {
+                    let y = parts[2].length === 2 ? "20" + parts[2] : parts[2];
+                    let normDate = parseInt(parts[0], 10) + "/" + parseInt(parts[1], 10) + "/" + y;
+                    if(!library.scheduleDates) library.scheduleDates = {};
+                    if(!library.scheduleDates[normDate]) library.scheduleDates[normDate] = [];
+                    library.scheduleDates[normDate].push(item);
+                }
+                return; 
+            }
+
+            let days = []; 
+            if (s1 && s1.toLowerCase() !== "null") {
+                s1.split(',').forEach(p => { 
+                    if (p.includes('-')) { let l = p.split('-'); for (let i = parseInt(l[0]); i <= parseInt(l[1]); i++) days.push(i); } 
+                    else { days.push(parseInt(p)); } 
+                });
+            }
+            if (days.length === 0) days = [0, 1, 2, 3, 4, 5, 6]; 
+            [...new Set(days)].forEach(d => { if(library.schedule[d]) library.schedule[d].push(item); });
+        }
+
         function processData(data) {
-            library = { news: null, chimes: null, weather: null, traffic: null, hours: {}, breaking: null, ads: [], jingles: [], spaces: [], promos: [], filler: [], schedule: {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}, scheduleDates: {} };
-            
+            library = { news: null, thirty_news: null, breaking_news: null, chimes: null, weather: null, traffic: null, hours: {}, breaking: null, ads: [], jingles: [], spaces: [], promos: [], filler: [], schedule: {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}, scheduleDates: {} };
             data.forEach(row => {
                 if (!row.type || String(row.type).trim() === "") return;
+                let rawType = row.type.toLowerCase().replace(/\s+/g, '');
                 
-                let typeRaw = row.type.toLowerCase().replace(/\s+/g, '');
-                if (typeRaw === 'imageradio') {
-                    let imgVal = row.image || row.src || "";
-                    if (imgVal) CONFIG.defaultLogo = imgVal;
-                    return; 
+                // Determinamos si es de tipo Filler
+                let isFillerType = !row.hour && !['news','thirty_breaking_news','breaking_news','weather','traffic','chimes','hour','breaking','breakinglive','estudiolive','emergency','jingle','ad','promo','schedule','live','special','podcast','interview','off','sports','space'].includes(rawType);
+                
+                let urls = [];
+                if (isFillerType && row.src && row.src.includes('|')) {
+                    urls = row.src.split('|').map(u => u.trim()).filter(u => u !== "");
+                } else {
+                    urls = [parseAndRotateLink(row.src)];
                 }
 
-                let processedSrc = parseAndRotateLink(row.src);
-                let item = { src: processedSrc, title: row.title || "Emisión", artist: row.artist || "Radio Maitino", img: row.image || "", dur: parseInt(row.duration) || 300, type: typeRaw, dayRaw: row.day, hourRaw: row.hour };
-                let t = item.type;
+                urls.forEach((url, idx) => {
+                    let item = { 
+                        src: url, 
+                        title: row.title || "Emisión", 
+                        artist: row.artist || "Radio Maitino", 
+                        img: row.image || "", 
+                        dur: parseInt(row.duration) || (isFillerType ? 2400 : 300), // 2400 segundos (40 min) para fillers por defecto
+                        type: rawType, 
+                        dayRaw: row.day, 
+                        hourRaw: row.hour 
+                    };
+                    let t = item.type;
 
-                if (['news', 'breaking_news', 'thirty_breaking_news'].includes(t)) library.news = item; 
-                else if (t === 'weather') library.weather = item; 
-                else if (t === 'traffic') library.traffic = item; 
-                else if (t === 'chimes') library.chimes = item;
-                else if (t === 'space' && !item.hourRaw) library.spaces.push(item);
-                else if (t === 'hour') { let m = String(item.hourRaw||"").trim().match(/^(\d{1,2}):(\d{2})/); if(m) library.hours[parseInt(m[1], 10)] = item; else library.hours['default'] = item; } 
-                else if (['breaking', 'breaking_live', 'emergency', 'estudiolive'].includes(t)) {
-                    if (item.dayRaw || item.hourRaw) addToSchedule(item); 
-                    else library.breaking = item; 
-                }
-                else if (t === 'jingle') library.jingles.push(item); 
-                else if (t === 'ad') library.ads.push(item);
-                else if (t === 'promo') library.promos.push(item);
-                else if (['schedule', 'podcast', 'interview', 'off', 'sports', 'live', 'live_free', 'live3', 'special'].includes(t)) {
-                    if (item.dayRaw || item.hourRaw) addToSchedule(item); else library.filler.push(item);
-                } else { library.filler.push(item); }
+                    if (t === 'news') library.news = item; 
+                    else if (t === 'thirty_breaking_news') library.thirty_news = item;
+                    else if (t === 'breaking_news') library.breaking_news = item;
+                    else if (t === 'weather') library.weather = item;
+                    else if (t === 'traffic') library.traffic = item;
+                    else if (t === 'chimes') library.chimes = item;
+                    else if (t === 'space' && !item.hourRaw) library.spaces.push(item);
+                    else if (t === 'hour') { let m = String(item.hourRaw||"").trim().match(/^(\d{1,2}):(\d{2})/); if(m) library.hours[parseInt(m[1], 10)] = item; else library.hours['default'] = item; } 
+                    else if (['breaking', 'breakinglive', 'estudiolive', 'emergency'].includes(t)) {
+                        if (item.dayRaw || item.hourRaw) { item.type = t; addToSchedule(item); } 
+                        else { item.type = t; library.breaking = item; }
+                    }
+                    else if (t === 'jingle') library.jingles.push(item); else if (t === 'ad') library.ads.push(item);
+                    else if (t === 'promo') library.promos.push(item);
+                    else if (['schedule', 'live', 'special', 'podcast', 'interview', 'off', 'sports'].includes(t)) {
+                        if (item.dayRaw || item.hourRaw) addToSchedule(item); else library.filler.push(item);
+                    } else { library.filler.push(item); }
+                });
             });
-        }
-
-        // --- PRECARGA EFICIENTE DE RECURSOS ---
-        function actualizarPrecarga(urlActual, urlsSiguientes = []) {
-            let urlsNecesarias = [urlActual, ...urlsSiguientes].filter(url => url && !url.startsWith('data:'));
-            
-            for (let url of activePreloads.keys()) {
-                if (!urlsNecesarias.includes(url)) {
-                    let oldAudio = activePreloads.get(url);
-                    oldAudio.src = "";
-                    oldAudio.load();
-                    activePreloads.delete(url);
-                }
-            }
-
-            urlsNecesarias.forEach(url => {
-                if (!activePreloads.has(url)) {
-                    let pre = new Audio();
-                    pre.preload = "auto";
-                    pre.src = url;
-                    activePreloads.set(url, pre);
-                }
-            });
-        }
-
-        // --- ENRUTADOR IDLE DE DECK ---
-        function preprocesarIdleDeck(nextUrl) {
-            if (!nextUrl || nextUrl.startsWith('data:')) return;
-            let idleDeck = (activeDeck === deckA) ? deckB : deckA;
-            if (idleDeck !== fadingDeck && lastIdlePreloadedUrl !== nextUrl && !isTransitioning) {
-                idleDeck.src = nextUrl;
-                idleDeck.load();
-                lastIdlePreloadedUrl = nextUrl;
-            }
         }
 
         function initAudio() {
-            initPips();
-            requestAnimationFrame(drawVisualizer);
+            if (!audioCtx) {
+                audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                requestAnimationFrame(drawVisualizer);
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
 
         function drawVisualizer() {
@@ -462,6 +318,18 @@
             }
         }
 
+        function playPip(dur) {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            let t = audioCtx.currentTime;
+            let osc = audioCtx.createOscillator(), pGain = audioCtx.createGain();
+            osc.type = 'sine'; osc.frequency.value = 1000; osc.connect(pGain); pGain.connect(audioCtx.destination); 
+            let pipVolume = userVolume * 0.5; 
+            pGain.gain.setValueAtTime(0, t); pGain.gain.setValueAtTime(pipVolume, t + 0.001);
+            pGain.gain.setValueAtTime(pipVolume, t + dur - 0.001); pGain.gain.setValueAtTime(0, t + dur);
+            osc.start(t); osc.stop(t + dur + 0.01);
+        }
+
         function gestionarPips(m, s) {
             let isApproachingHour = (m === 59 || m === 29);
             if (!isApproachingHour && !(m === 0 || m === 30)) { lastPipFired = -1; return; }
@@ -474,9 +342,8 @@
             if (!systemOn) {
                 initAudio(); 
                 visStartTime = Date.now(); 
-                deckA.src = SILENCE_MP3; safePlay(deckA); deckB.src = SILENCE_MP3; safePlay(deckB); 
+                deckA.src = SILENCE_MP3; safePlay(deckA); deckB.src = SILENCE_MP3; safePlay(deckB);
                 systemOn = true; el.btn.classList.add('active'); el.tally.classList.add('live'); updateBtnState(); requestAnimationFrame(visualLoop); 
-                
                 function loop() { if (systemOn) { broadcastLogic(); broadcastLoopTimer = setTimeout(loop, 1000); } }
                 loop();
             } else {
@@ -485,355 +352,207 @@
                 activeDeck.pause(); activeDeck.removeAttribute('src'); activeDeck.load();
                 if (fadingDeck) { fadingDeck.pause(); fadingDeck.removeAttribute('src'); fadingDeck.load(); fadingDeck = null; }
                 currentSourceUrl = ""; 
-                updateDisplay({ title: "Emisión Detenida", artist: "Off Air", img: "" }, 'OFF', "status-badge off");
+                updateDisplay({ title: "Emisión Detenida", artist: "Off Air", img: "" }, '<i class="fas fa-power-off"></i> OFF', "status-badge off");
                 el.canvas.getContext('2d').clearRect(0, 0, el.canvas.width, el.canvas.height);
             }
         }
 
         function broadcastLogic() {
             if (!systemOn) return;
-            const now = getSpainTime();
-            const d = now.getDay(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds(), ms = now.getMilliseconds();
-            
-            const secInDay = h * 3600 + m * 60 + s + (ms / 1000);
-            const secInHour = m * 60 + s + (ms / 1000);
+            const now = getSpainTime(), d = now.getDay(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds(), ms = now.getMilliseconds();
+            const secInDay = h * 3600 + m * 60 + s, secInHour = m * 60 + s;
             
             gestionarPips(m, s);
 
             if (s === lastScheduleSec) return;
             lastScheduleSec = s;
 
-            if (isInEmergencyMode) {
-                let nextItem = { src: AUDIO_AVISO_CAIDA, title: "Radio Maitino", artist: "Aviso de Mantenimiento", img: CONFIG.defaultLogo, type: "error_fallback", dur: 300 };
-                ejecutarAudio(nextItem, (Math.floor(Date.now() / 1000)) % 300, 'ERROR_FALLBACK');
-                return;
-            }
-
-            // GESTOR OPTIMIZADO PARA DIRECTOS GLOBALES (Sin bloquear pre-grabados)
-            if (library.breaking && ['estudiolive', 'breaking_live'].includes(library.breaking.type)) {
-                if (activeLiveState.src !== library.breaking.src) {
-                    activeLiveState = { src: library.breaking.src, startTime: Date.now() / 1000 };
-                }
-            } else {
-                activeLiveState = { src: "", startTime: 0 };
-            }
-
             let nextItem = null, seekPos = 0, mode = 'FILLER';
-            let urlsSiguientesParaCache = []; 
-
-            let scheduledShow = (library.schedule[d] || []).find(sh => secInDay >= sh.startSecs && secInDay < (sh.startSecs + sh.dur));
-
-            if (scheduledShow && scheduledShow.type === 'off') {
-                nextItem = { src: SILENCE_MP3, title: "Fuera de Antena", artist: "Radio Maitino", img: CONFIG.defaultLogo, type: "off" };
-                ejecutarAudio(nextItem, 0, 'OFF'); return;
-            }
-
-            let isEstudioLive = (scheduledShow && scheduledShow.type === 'estudiolive') || (library.breaking && library.breaking.type === 'estudiolive');
             
-            if (isEstudioLive) {
-                nextItem = (scheduledShow && scheduledShow.type === 'estudiolive') ? scheduledShow : library.breaking;
-                if (scheduledShow && scheduledShow.type === 'estudiolive') {
-                    seekPos = Math.max(0, secInDay - scheduledShow.startSecs);
-                } else {
-                    seekPos = (Date.now() / 1000) - activeLiveState.startTime;
-                }
-                mode = 'ESTUDIOLIVE';
-            } 
-            else if (library.breaking || (scheduledShow && ['breaking', 'breaking_live', 'emergency'].includes(scheduledShow.type))) {
-                let alertItem = (scheduledShow && ['breaking', 'breaking_live', 'emergency'].includes(scheduledShow.type)) ? scheduledShow : library.breaking;
-                nextItem = alertItem;
-                mode = alertItem.type.toUpperCase();
-                
-                if (alertItem.type === 'breaking_live') {
-                    seekPos = scheduledShow ? Math.max(0, secInDay - alertItem.startSecs) : ((Date.now() / 1000) - activeLiveState.startTime);
-                } else {
-                    // BUCLE INFINITO ASEGURADO PARA ALERTA PRE-GRABADA HASTA SU ELIMINACIÓN
-                    seekPos = (Math.floor(Date.now() / 1000)) % Math.max(1, alertItem.dur);
-                }
-            }
-            else if ((library.news && library.news.type === 'breaking_news' && m === 0) || 
-                     (library.news && library.news.type === 'thirty_breaking_news' && m === 30)) {
-                
-                let forceSeq = [];
-                if (library.hours[h]) {
-                    forceSeq.push({...library.hours[h], cMode: 'HOUR'});
-                    forceSeq.push({ src: SILENCE_MP3, title: library.news ? library.news.title : "Informativo Urgente", artist: library.news ? library.news.artist : "Radio Maitino", img: library.news ? library.news.img : CONFIG.defaultLogo, dur: 1, type: 'silence', cMode: 'SILENCE' });
-                }
-                forceSeq.push({...library.news, cMode: 'NEWS'});
-                if (library.weather) forceSeq.push({...library.weather, cMode: 'WEATHER'});
-                if (library.traffic) forceSeq.push({...library.traffic, cMode: 'TRAFFIC'}); 
-                if (library.ads.length > 0) forceSeq.push({...library.ads[h % library.ads.length], cMode: 'AD'});
+            let normToday = now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear();
+            let specificDateShows = library.scheduleDates ? (library.scheduleDates[normToday] || []) : [];
+            let scheduledShow = specificDateShows.find(sh => secInDay >= sh.startSecs && secInDay < sh.startSecs + sh.dur);
+            if (!scheduledShow) scheduledShow = (library.schedule[d] || []).find(sh => secInDay >= sh.startSecs && secInDay < sh.startSecs + sh.dur);
 
-                let forceDur = forceSeq.reduce((a, b) => a + Math.max(1, b.dur), 0);
-                if (secInHour < forceDur) {
-                    let c = secInHour;
-                    for (let i = 0; i < forceSeq.length; i++) {
-                        let itm = forceSeq[i];
-                        let idur = Math.max(1, itm.dur);
-                        if (c < idur) { 
-                            nextItem = itm; seekPos = c; mode = itm.cMode; 
-                            if(forceSeq[i+1]) urlsSiguientesParaCache.push(forceSeq[i+1].src);
-                            if(forceSeq[i+2]) urlsSiguientesParaCache.push(forceSeq[i+2].src);
-                            break; 
-                        }
-                        c -= idur;
-                    }
-                }
-            }
-            if (!nextItem && scheduledShow && ['chimes', 'live', 'special', 'sports'].includes(scheduledShow.type)) {
-                if (scheduledShow.type === 'chimes' && h === 0 && m === 0 && secInHour < Math.max(1, scheduledShow.dur)) {
-                    nextItem = scheduledShow; seekPos = secInHour; mode = 'CHIMES';
-                } else if (scheduledShow.type !== 'chimes') {
-                    nextItem = scheduledShow;
-                    seekPos = Math.max(0, secInDay - scheduledShow.startSecs);
-                    mode = scheduledShow.type.toUpperCase();
-                }
-            }
+            // Bloque Lógico Principal (con silencios 1s sin fundido)
+            let isHalfHour = (m === 30);
+            let isTopHour = (m === 0);
+            let tohSeq = [];
 
-            if (!nextItem) {
+            if (isTopHour) {
                 let curH = (h === 0) ? library.chimes : (library.hours[h] || library.hours['default']);
-                let tohSeq = [];
-                
                 if (curH) {
                     tohSeq.push({...curH, computedMode: 'HOUR'});
-                    tohSeq.push({ src: SILENCE_MP3, title: library.news ? library.news.title : "Boletín Informativo", artist: library.news ? library.news.artist : "Radio Maitino", img: library.news ? library.news.img : CONFIG.defaultLogo, dur: 1, type: 'silence', computedMode: 'SILENCE' });
+                    tohSeq.push({ src: SILENCE_MP3, title: "Radio Maitino", artist: "Pausa", img: CONFIG.defaultLogo, type: "silence", dur: 1, computedMode: 'SILENCE' });
                 }
-                if (library.news && !['breaking_news', 'thirty_breaking_news'].includes(library.news.type)) {
-                    tohSeq.push({...library.news, computedMode: 'NEWS'});
+                let topNews = library.breaking_news || library.news;
+                if (topNews) {
+                    tohSeq.push({...topNews, computedMode: 'NEWS'});
+                    tohSeq.push({ src: SILENCE_MP3, title: "Radio Maitino", artist: "Pausa", img: CONFIG.defaultLogo, type: "silence", dur: 1, computedMode: 'SILENCE' });
                 }
                 if (library.weather) tohSeq.push({...library.weather, computedMode: 'WEATHER'});
-                if (library.traffic) tohSeq.push({...library.traffic, computedMode: 'TRAFFIC'}); 
-                if (library.ads.length > 0) tohSeq.push({...library.ads[h % library.ads.length], computedMode: 'AD'});
+                if (library.traffic) tohSeq.push({...library.traffic, computedMode: 'TRAFFIC'});
+            } 
+            else if (isHalfHour && library.thirty_news) {
+                tohSeq.push({...library.thirty_news, computedMode: 'THIRTY_BREAKING_NEWS'});
+                tohSeq.push({ src: SILENCE_MP3, title: "Radio Maitino", artist: "Pausa", img: CONFIG.defaultLogo, type: "silence", dur: 1, computedMode: 'SILENCE' });
+                if (library.weather) tohSeq.push({...library.weather, computedMode: 'WEATHER'});
+                if (library.traffic) tohSeq.push({...library.traffic, computedMode: 'TRAFFIC'});
+            }
 
-                let blockDur = tohSeq.reduce((a, b) => a + Math.max(1, b.dur), 0);
+            let blockDur = tohSeq.reduce((a, b) => a + Math.max(1, b.dur), 0);
 
-                if (secInHour < blockDur) {
-                    let c = secInHour;
-                    for (let i = 0; i < tohSeq.length; i++) {
-                        let itm = tohSeq[i];
-                        let idur = Math.max(1, itm.dur);
-                        if (c < idur) { 
-                            nextItem = itm; seekPos = c; mode = itm.computedMode; 
-                            if(tohSeq[i+1]) urlsSiguientesParaCache.push(tohSeq[i+1].src);
-                            if(tohSeq[i+2]) urlsSiguientesParaCache.push(tohSeq[i+2].src);
-                            break; 
-                        }
-                        c -= idur;
-                    }
-                } 
-                else if (scheduledShow) {
-                    let delay = (scheduledShow.startSecs % 3600 === 0) ? blockDur : 0;
-                    nextItem = scheduledShow;
-                    seekPos = Math.max(0, (secInDay - scheduledShow.startSecs) - delay);
-                    
-                    if (['live_free', 'live3'].includes(scheduledShow.type)) mode = 'LIVE_FREE';
-                    else if (scheduledShow.type === 'podcast') mode = 'PODCAST';
-                    else if (scheduledShow.type === 'interview') mode = 'INTERVIEW';
-                    else mode = 'SHOW';
-                } 
-                else {
-                    mode = 'FILLER';
-                    let seq = [];
-                    library.filler.forEach((f, idx) => {
-                        seq.push(f);
-                        if (idx % 2 === 0 && library.jingles.length > 0) seq.push(library.jingles[idx % library.jingles.length]);
-                    });
-                    if (seq.length > 0) {
-                        let total = seq.reduce((a, b) => a + Math.max(1, b.dur), 0);
-                        let c = secInDay % (total || 1); 
-                        for (let i = 0; i < seq.length; i++) {
-                            let itm = seq[i];
-                            let idur = Math.max(1, itm.dur);
-                            if (c < idur) { 
-                                nextItem = itm; seekPos = c; 
-                                let n1 = seq[(i + 1) % seq.length];
-                                let n2 = seq[(i + 2) % seq.length];
-                                urlsSiguientesParaCache.push(n1.src, n2.src);
-                                break; 
-                            }
-                            c -= idur;
-                        }
-                    }
+            // Supresión total en programas en directo, deportes y especiales
+            let suppressNews = scheduledShow && ['estudiolive', 'sports', 'live', 'special'].includes(scheduledShow.type);
+            if (suppressNews) { tohSeq = []; blockDur = 0; }
+
+            // Lógica de Prioridades
+            if (library.breaking) {
+                nextItem = library.breaking;
+                if (library.breaking.type === 'breakinglive') { mode = 'BREAKINGLIVE'; seekPos = 0; }
+                else if (library.breaking.type === 'estudiolive') { mode = 'ESTUDIOLIVE'; seekPos = 0; }
+                else { seekPos = (Math.floor(Date.now() / 1000)) % Math.max(1, library.breaking.dur); mode = 'BREAKING'; }
+            }
+            else if ((isTopHour || isHalfHour) && secInHour < blockDur) {
+                let c = secInHour;
+                for (let itm of tohSeq) { 
+                    let idur = Math.max(1, itm.dur); 
+                    if (c < idur) { nextItem = itm; seekPos = c; mode = itm.computedMode; break; } 
+                    c -= idur; 
+                }
+            }
+            else if (scheduledShow) {
+                let delay = (scheduledShow.startSecs % 3600 === 0 && !suppressNews) ? blockDur : 0;
+                nextItem = scheduledShow; 
+                seekPos = Math.max(0, (secInDay - scheduledShow.startSecs) - delay); 
+                mode = scheduledShow.type.toUpperCase();
+            }
+            else {
+                mode = 'FILLER'; 
+                let seq = []; 
+                library.filler.forEach((f, idx) => { 
+                    seq.push(f); 
+                    if (idx % 2 === 0 && library.jingles.length > 0) seq.push(library.jingles[idx % library.jingles.length]); 
+                });
+                if (seq.length > 0) { 
+                    let total = seq.reduce((a, b) => a + Math.max(1, b.dur), 0);
+                    let c = secInDay % (total || 1); 
+                    for (let itm of seq) { 
+                        let idur = Math.max(1, itm.dur); 
+                        if (c < idur) { nextItem = itm; seekPos = c; break; } 
+                        c -= idur; 
+                    } 
                 }
             }
 
-            if (!isDataLoaded) { 
-                nextItem = { src: SILENCE_MP3, title: "Conectando...", artist: "Cargando señal...", img: CONFIG.defaultLogo, type: "loading", dur: 300 }; 
-                mode = 'LOADING'; 
-            } else if (!nextItem) {
-                nextItem = { src: SILENCE_MP3, title: "Radio Maitino", artist: "Emisión Continua", img: CONFIG.defaultLogo, type: "filler", dur: 300 }; 
-                mode = 'FILLER';
-            }
+            if (!isDataLoaded) { nextItem = { src: SILENCE_MP3, title: "Conectando...", artist: "Sintonizando emisión...", img: CONFIG.defaultLogo, type: "loading", dur: 300 }; mode = 'LOADING'; }
+            else if (!nextItem) { nextItem = { src: SILENCE_MP3, title: "Emisión Continuada", artist: "Silencio", img: CONFIG.defaultLogo, type: "off", dur: 300 }; mode = 'OFF'; }
 
-            currentMode = mode;
-            ejecutarAudio(nextItem, seekPos, mode);
-            
-            if(nextItem && nextItem.src) {
-                actualizarPrecarga(nextItem.src, urlsSiguientesParaCache);
-                if (urlsSiguientesParaCache.length > 0) {
-                    preprocesarIdleDeck(urlsSiguientesParaCache[0]); 
-                }
-            }
-        }
-
-        function isSeekableMode(mode) {
-            const unseekable = ['ESTUDIOLIVE', 'LIVE', 'LIVE_FREE', 'LIVE3', 'BREAKING_LIVE'];
-            return !unseekable.includes(mode.toUpperCase());
+            currentMode = mode; 
+            if (nextItem) ejecutarAudio(nextItem, seekPos, mode);
         }
 
         function gestionarFaders(m, s, ms) {
             let e = s + (ms / 1000);
-            
-            if (m === 59 || m === 29) { 
-                if (e >= 53.0 && e < 57.0) {
-                    faderLevel = Math.max(0.0, 1.0 - ((e - 53.0) / 4.0)); 
-                } 
-                else if (e >= 57.0) { 
-                    faderLevel = 0.0; 
-                    if (!activeDeck.paused && !['NEWS','SPORTS','LIVE','LIVE_FREE','ESTUDIOLIVE','BREAKING','BREAKING_LIVE','EMERGENCY','ERROR_FALLBACK'].includes(currentMode)) {
-                        activeDeck.pause(); 
-                    }
-                } 
-                else {
-                    faderLevel = 1.0;
-                }
+            if (m === 59) { 
+                if (e >= 52 && e < 59) faderLevel = 1.0 - ((e - 52) / 7); 
+                else if (e >= 59) { faderLevel = 0.0; if (!activeDeck.paused && !['LIVE','ESTUDIOLIVE','NEWS','BREAKING_NEWS','SPORTS','BREAKINGLIVE'].includes(currentMode)) activeDeck.pause(); } 
+                else faderLevel = 1.0;
             } 
-            else {
-                faderLevel = 1.0;
-            }
+            else if (m === 0) faderLevel = 1.0; 
+            else if (m === 29 && e >= 55) faderLevel = 1.0 - (0.4 * ((e - 55) / 5)); 
+            else if (m === 30 && e < 3) faderLevel = 0.6 + (0.4 * (e / 3)); 
+            else faderLevel = 1.0;
 
             let bv = userVolume * faderLevel;
             let ns = Date.now() / 1000, ad = (activeDeck === deckA) ? deckA : deckB, fd = (fadingDeck === deckA) ? deckA : deckB;
             
             if (fadingDeck) {
                 let fr = fadeOutEndTime - ns;
-                if (fr <= 0 || faderLevel === 0.0 || currentCrossfade === 0.0) { 
-                    fadingDeck.pause(); 
-                    fadingDeck.removeAttribute('src'); 
-                    fadingDeck = null; 
-                    fd.volume = 0; 
-                    ad.volume = Math.max(0, Math.min(1, bv)); 
+                if (fr <= 0 || faderLevel === 0.0 || currentCrossfade <= 0.1) { 
+                    fadingDeck.pause(); fadingDeck.removeAttribute('src'); fadingDeck = null; fd.volume = 0; ad.volume = Math.max(0, Math.min(1, bv)); 
                 } 
                 else { 
-                    let r = fr / currentCrossfade; 
-                    fd.volume = Math.max(0, Math.min(1, bv * r)); 
-                    ad.volume = Math.max(0, Math.min(1, bv * (1 - r))); 
+                    let r = fr / currentCrossfade; fd.volume = Math.max(0, Math.min(1, bv * r)); ad.volume = Math.max(0, Math.min(1, bv * (1 - r))); 
                 }
-            } else { 
-                ad.volume = Math.max(0, Math.min(1, bv)); 
-            }
+            } else { ad.volume = Math.max(0, Math.min(1, bv)); }
         }
 
         function updateDisplay(item, badgeHtml, badgeClass) {
             let html = '<i class="fas fa-music"></i> RADIO MAITINO';
-            let safeBadge = badgeHtml.toUpperCase();
-            
-            if (safeBadge === 'SILENCE') { safeBadge = 'NEWS'; badgeClass = 'status-badge news'; }
-            
-            if (safeBadge === 'ESTUDIOLIVE') html = '<i class="fas fa-microphone"></i> ESTUDIO EN DIRECTO';
-            else if (safeBadge === 'EMERGENCY') html = '<i class="fas fa-triangle-exclamation"></i> ALERTA TÉCNICA';
-            else if (safeBadge === 'BREAKING') html = '<i class="fas fa-bolt"></i> ÚLTIMA HORA';
-            else if (safeBadge === 'BREAKING_LIVE') html = '<i class="fas fa-bolt"></i> ÚLTIMA HORA (DIRECTO)';
-            else if (safeBadge === 'BREAKING_NEWS' || safeBadge === 'THIRTY_BREAKING_NEWS') html = '<i class="fas fa-bolt"></i> INFORMATIVO URGENTE';
-            else if (safeBadge === 'SPECIAL') html = '<i class="fas fa-star"></i> PROGRAMA ESPECIAL';
-            else if (safeBadge === 'SPORTS') html = '<i class="fas fa-trophy"></i> DEPORTES';
-            else if (safeBadge === 'CHIMES') html = '<i class="fas fa-bell"></i> MEDIANOCHE';
-            else if (safeBadge === 'HOUR') html = '<i class="fas fa-clock"></i> SEÑAL HORARIA';
-            else if (safeBadge === 'NEWS') html = '<i class="fas fa-globe-europe"></i> BOLETÍN HORARIO';
-            else if (safeBadge === 'WEATHER') html = '<i class="fas fa-cloud-sun"></i> EL TIEMPO';
-            else if (safeBadge === 'TRAFFIC') html = '<i class="fas fa-car"></i> ESTADO DEL TRÁFICO';
-            else if (safeBadge === 'AD') html = '<i class="fas fa-bullhorn"></i> PUBLICIDAD';
-            else if (safeBadge === 'JINGLE') html = '<i class="fas fa-wave-square"></i> RADIO MAITINO';
-            else if (safeBadge === 'SPACE') html = '<i class="fas fa-comments"></i> ESPACIO DE SERVICIO';
-            else if (safeBadge === 'PROMO') html = '<i class="fas fa-star"></i> PROMOCIÓN';
-            else if (safeBadge === 'PODCAST') html = '<i class="fas fa-history"></i> DIFERIDO';
-            else if (safeBadge === 'INTERVIEW') html = '<i class="fas fa-microphone-lines"></i> ENTREVISTA';
-            else if (safeBadge === 'LIVE') html = '<i class="fas fa-satellite-dish"></i> CONEXIÓN EXTERNA';
-            else if (safeBadge === 'LIVE_FREE' || safeBadge === 'LIVE3') html = '<i class="fas fa-microphone"></i> CONEXIÓN LIBRE';
-            else if (safeBadge === 'SHOW') html = '<i class="fas fa-broadcast-tower"></i> EN DIRECTO';
-            else if (safeBadge === 'LOADING') html = '<i class="fas fa-spinner fa-spin"></i> CONECTANDO...';
-            else if (safeBadge === 'ERROR_FALLBACK') html = '<i class="fas fa-satellite-dish"></i> FALLO DE RECEPCIÓN';
-            else if (safeBadge === 'OFF') html = '<i class="fas fa-moon"></i> FUERA DE ANTENA';
+            let bText = badgeHtml.toUpperCase();
 
-            el.title.innerText = item.title;
+            if (bText === 'ESTUDIOLIVE') html = '<i class="fas fa-microphone"></i> ESTUDIO EN DIRECTO';
+            else if (bText === 'SPORTS') html = '<i class="fas fa-trophy"></i> DEPORTES';
+            else if (bText === 'BREAKING') html = '<i class="fas fa-bolt"></i> ÚLTIMA HORA';
+            else if (bText === 'BREAKINGLIVE') html = '<i class="fas fa-satellite-dish"></i> ÚLTIMA HORA DIRECTO';
+            else if (bText === 'SPECIAL') html = '<i class="fas fa-star"></i> PROGRAMA ESPECIAL';
+            else if (bText === 'CHIMES') html = '<i class="fas fa-bell"></i> MEDIANOCHE';
+            else if (bText === 'HOUR') html = '<i class="fas fa-clock"></i> SEÑAL HORARIA';
+            else if (bText === 'NEWS' || bText === 'BREAKING_NEWS') html = '<i class="fas fa-globe-europe"></i> BOLETÍN HORARIO';
+            else if (bText === 'THIRTY_BREAKING_NEWS') html = '<i class="fas fa-bolt"></i> INFORMATIVO MEDIA HORA';
+            else if (bText === 'WEATHER') html = '<i class="fas fa-cloud-sun"></i> EL TIEMPO';
+            else if (bText === 'TRAFFIC') html = '<i class="fas fa-car"></i> ESTADO DEL TRÁFICO';
+            else if (bText === 'LIVE') html = '<i class="fas fa-satellite-dish"></i> CONEXIÓN EXTERNA';
+            else if (bText === 'AD') html = '<i class="fas fa-bullhorn"></i> PUBLICIDAD';
+            else if (bText === 'JINGLE') html = '<i class="fas fa-wave-square"></i> RADIO MAITINO';
+            else if (bText === 'SPACE') html = '<i class="fas fa-comments"></i> ESPACIO DE SERVICIO';
+            else if (bText === 'PROMO') html = '<i class="fas fa-star"></i> PROMOCIÓN';
+            else if (bText === 'PODCAST') html = '<i class="fas fa-history"></i> DIFERIDO';
+            else if (bText === 'INTERVIEW') html = '<i class="fas fa-microphone-lines"></i> ENTREVISTA';
+            else if (bText === 'EMERGENCY') html = '<i class="fas fa-triangle-exclamation"></i> ALERTA TÉCNICA';
+            else if (bText === 'SHOW' || bText === 'SCHEDULE') html = '<i class="fas fa-broadcast-tower"></i> EN DIRECTO';
+            else if (bText === 'LOADING') html = '<i class="fas fa-spinner fa-spin"></i> CONECTANDO...';
+            else if (bText === 'OFF') html = 'FUERA DE ANTENA';
+            else if (bText === 'SILENCE') { html = 'CONTINÚA...'; badgeClass = 'status-badge silence'; }
+
+            if (bText === 'SPORTS' || item.type === 'sports') {
+                let parts = item.title.split('|'); let main = parts[0].trim(); let score = parts[1] ? `<br><span class="score-box">${parts[1].trim()}</span>` : '';
+                el.title.innerHTML = main + score;
+            } else { el.title.innerText = item.title; }
+
             el.sub.innerText = item.artist; el.badge.innerHTML = html; el.badge.className = badgeClass;
             
-            let displayImg = item.img || CONFIG.defaultLogo;
-            if (displayImg && el.img.src !== displayImg) el.img.src = displayImg;
+            if (item.img && el.img.src !== item.img) { el.img.src = item.img; }
         }
 
         function ejecutarAudio(item, seek, mode) {
             let safeMode = mode.toUpperCase();
 
             if (currentSourceUrl !== item.src) {
-                if (isTransitioning) return;
-                
-                isTransitioning = true;
                 currentSourceUrl = item.src; fadingDeck = activeDeck; activeDeck = (activeDeck === deckA) ? deckB : deckA;
-                
-                activeDeck.onloadedmetadata = null; activeDeck.onloadeddata = null; activeDeck.oncanplay = null;
-
-                if (activeDeck.src !== item.src) {
-                    activeDeck.src = item.src || SILENCE_MP3;
-                    activeDeck.load();
-                }
+                activeDeck.src = item.src;
                 
                 let rt = Date.now() / 1000;
-                let seekApplied = false;
-
-                const aplicarSincronizacion = () => {
-                    if (seekApplied) return;
-                    if (!isSeekableMode(safeMode)) { seekApplied = true; return; }
-
-                    let delayProcesado = (Date.now() / 1000) - rt; 
-                    let adj = seek + delayProcesado; 
-
-                    if (activeDeck.duration && isFinite(activeDeck.duration)) {
-                        if (adj >= activeDeck.duration) adj = adj % activeDeck.duration; 
-                    }
-
-                    if (adj > 0.05) {
-                        try { activeDeck.currentTime = adj; seekApplied = true; } 
-                        catch(e) { console.warn("Buffer no listo. Reintentando seek..."); }
-                    } else {
-                        seekApplied = true;
+                let isStream = ['LIVE','ESTUDIOLIVE','SPORTS','BREAKINGLIVE'].includes(safeMode);
+                
+                activeDeck.onloadedmetadata = () => { 
+                    let adj = seek + ((Date.now() / 1000) - rt); 
+                    if (!isStream && adj > 2 && (!activeDeck.duration || adj < activeDeck.duration)) {
+                        try { activeDeck.currentTime = adj; } catch(e) {}
                     }
                 };
-
-                activeDeck.onloadedmetadata = aplicarSincronizacion;
-                activeDeck.onloadeddata = aplicarSincronizacion;
                 
                 activeDeck.oncanplay = () => { 
-                    aplicarSincronizacion();
                     isTransitioning = false; 
-                    errorCount = 0; 
-                    isInEmergencyMode = false;
 
-                    if (['HOUR', 'SILENCE'].includes(safeMode)) {
+                    if (['HOUR', 'NEWS', 'BREAKING_NEWS', 'THIRTY_BREAKING_NEWS', 'WEATHER', 'TRAFFIC', 'SILENCE'].includes(safeMode)) {
                         currentCrossfade = 0.0; 
-                        fadeOutEndTime = (Date.now() / 1000) + currentCrossfade;
-                    } else if (['NEWS', 'CHIMES', 'ESTUDIOLIVE', 'BREAKING', 'BREAKING_LIVE', 'EMERGENCY', 'LIVE', 'ERROR_FALLBACK', 'THIRTY_BREAKING_NEWS', 'BREAKING_NEWS'].includes(safeMode)) {
-                        currentCrossfade = 1.0; 
-                        fadeOutEndTime = (Date.now() / 1000) + currentCrossfade;
+                    } else if (['JINGLE', 'AD', 'SPACE', 'PROMO'].includes(safeMode) || (item.dur && item.dur <= 5)) {
+                        currentCrossfade = 0.5; 
                     } else {
                         currentCrossfade = CONFIG.crossfadeDur; 
-                        fadeOutEndTime = (Date.now() / 1000) + currentCrossfade;
                     }
+
+                    fadeOutEndTime = (Date.now() / 1000) + currentCrossfade; 
                     safePlay(activeDeck); 
                 };
-
-                activeDeck.onerror = () => { isTransitioning = false; manejarError(); }
-                if (activeDeck.readyState >= 3) activeDeck.oncanplay();
-                
-                let formatClass = `status-badge ${item.type || safeMode.toLowerCase()}`;
-                updateDisplay(item, safeMode, formatClass);
+                activeDeck.load();
+                updateDisplay(item, safeMode, `status-badge ${item.type || safeMode.toLowerCase()}`);
             } else {
-                let ahora = Date.now();
-                if (activeDeck.readyState >= 3 && isSeekableMode(safeMode) && !activeDeck.seeking) {
-                    let drift = Math.abs(activeDeck.currentTime - seek);
-                    if (drift > 2.5 && (ahora - lastDriftCorrection > 8000)) { 
-                        try { activeDeck.currentTime = seek; lastDriftCorrection = ahora; } catch(e) {} 
-                    }
+                let isStream = ['LIVE','ESTUDIOLIVE','SPORTS','BREAKINGLIVE'].includes(safeMode);
+                if (activeDeck.readyState >= 3 && !isStream) {
+                    if (Math.abs(activeDeck.currentTime - seek) > 15) { try { activeDeck.currentTime = seek; } catch(e) {} }
                 }
                 if (activeDeck.paused && systemOn && !isTransitioning) safePlay(activeDeck);
             }
@@ -843,8 +562,14 @@
             let spainNow = getSpainTime();
             let d = spainNow.getDay(), curSecs = spainNow.getHours() * 3600 + spainNow.getMinutes() * 60 + spainNow.getSeconds();
             
-            let showsToday = (library.schedule[d] || []).slice().sort((a, b) => a.startSecs - b.startSecs);
-            let showsTomorrow = (library.schedule[(d + 1) % 7] || []).slice().sort((a, b) => a.startSecs - b.startSecs);
+            let normToday = spainNow.getDate() + "/" + (spainNow.getMonth() + 1) + "/" + spainNow.getFullYear();
+            let specificToday = library.scheduleDates ? (library.scheduleDates[normToday] || []) : [];
+            let showsToday = specificToday.concat(library.schedule[d] || []).slice().sort((a, b) => a.startSecs - b.startSecs);
+
+            let dTom = new Date(spainNow.getTime() + 86400000);
+            let normTomorrow = dTom.getDate() + "/" + (dTom.getMonth() + 1) + "/" + dTom.getFullYear();
+            let specificTomorrow = library.scheduleDates ? (library.scheduleDates[normTomorrow] || []) : [];
+            let showsTomorrow = specificTomorrow.concat(library.schedule[(d + 1) % 7] || []).slice().sort((a, b) => a.startSecs - b.startSecs);
             
             let upcoming = showsToday.filter(s => (s.startSecs + s.dur) > curSecs);
             let combined = upcoming.concat(showsTomorrow);
@@ -873,12 +598,11 @@
                     if (ssNum === 0) updateScheduleUI(); 
                     lastClockSec = ssNum;
                 }
-                
                 gestionarFaders(t.getMinutes(), t.getSeconds(), t.getMilliseconds());
                 requestAnimationFrame(visualLoop); 
             } 
         }
-        
+
         initSystem();
     </script>
 </body>
