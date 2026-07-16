@@ -106,8 +106,8 @@
         </div>
     </div>
 
-    <audio id="deck-a" preload="auto" playsinline></audio>
-    <audio id="deck-b" preload="auto" playsinline></audio>
+    <audio id="deck-a" crossorigin="anonymous" preload="auto" playsinline></audio>
+    <audio id="deck-b" crossorigin="anonymous" preload="auto" playsinline></audio>
 
     <script>
         const CONFIG = {
@@ -126,7 +126,9 @@
         let visStartTime = Date.now(); 
         
         let library = { news: null, thirty_news: null, breaking_news: null, chimes: null, weather: null, traffic: null, hours: {}, breaking: null, ads: [], jingles: [], spaces: [], promos: [], filler: [], schedule: {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}, scheduleDates: {} };
-        let audioCtx, lastPipFired = -1, lastPreloadedMin = -1;
+        
+        // CIRUGÍA: Variables nuevas para el compresor
+        let audioCtx, compressor, sourceA, sourceB, lastPipFired = -1, lastPreloadedMin = -1;
         let lastClockSec = -1, lastScheduleSec = -1; 
 
         const el = {
@@ -293,6 +295,24 @@
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                
+                // --- INICIO CIRUGÍA COMPRESOR UNIVERSAL ---
+                compressor = audioCtx.createDynamicsCompressor();
+                compressor.threshold.value = -24; // Empieza a regular a partir de -24dB
+                compressor.knee.value = 30;       // Curva de transición suave (evita saltos)
+                compressor.ratio.value = 12;      // Grado de nivelación (12:1 es óptimo para broadcast)
+                compressor.attack.value = 0.003;  // Acción ultrarrápida (3 milisegundos)
+                compressor.release.value = 0.25;  // Retorno natural (250 milisegundos)
+                compressor.connect(audioCtx.destination); // Enviar al destino final
+
+                // Conectar Deck A y Deck B al compresor en lugar de directo a los altavoces
+                sourceA = audioCtx.createMediaElementSource(deckA);
+                sourceB = audioCtx.createMediaElementSource(deckB);
+                
+                sourceA.connect(compressor);
+                sourceB.connect(compressor);
+                // --- FIN CIRUGÍA COMPRESOR UNIVERSAL ---
+                
                 requestAnimationFrame(drawVisualizer);
             }
             if (audioCtx.state === 'suspended') audioCtx.resume();
